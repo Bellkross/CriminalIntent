@@ -25,21 +25,11 @@ public class CrimeLab {
     }
 
     private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
-        //String sql = String.format("SELECT * FROM $1%s $2%s = $3%s",CrimeTable.NAME,CrimeTable.Cols.UUID,whereArgs.toString());
         String sql;
         if (whereArgs   == null)
             sql = String.format("SELECT * FROM %1$s;", CrimeTable.NAME);
         else
             sql = String.format("SELECT * FROM %1$s WHERE %2$s = ?", CrimeTable.NAME, CrimeTable.Cols.UUID);
-//        Cursor cursor = mDatabase.query(
-//                CrimeTable.NAME,
-//                null, // columns - с null выбираются все столбцы
-//                whereClause,
-//                whereArgs,
-//                null, // groupBy
-//                null, // having
-//                null // orderBy
-//        );
         Cursor cursor = mDatabase.rawQuery(sql, whereArgs);
         return new CrimeCursorWrapper(cursor);
     }
@@ -69,6 +59,7 @@ public class CrimeLab {
         values.put(CrimeTable.Cols.TITLE, crime.getTitle());
         values.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
         values.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
+        values.put(CrimeTable.Cols.SUSPECT, crime.getSuspect());
         return values;
     }
 
