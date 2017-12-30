@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.bignerdranch.android.criminalintent.CrimeDbSchema.CrimeTable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -43,6 +44,11 @@ public class CrimeLab {
         ContentValues values = getContentValues(c);
         mDatabase.delete(CrimeTable.NAME, CrimeTable.Cols.UUID + " =  ?",
                 new String[]{values.getAsString(CrimeTable.Cols.UUID)});
+    }
+
+    public File getPhotoFile(Crime crime) {
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, crime.getPhotoFilename());
     }
 
     public void updateCrime(Crime crime) {
