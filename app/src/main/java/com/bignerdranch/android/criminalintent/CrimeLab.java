@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bignerdranch.android.criminalintent.CrimeDbSchema.CrimeTable;
+import com.bignerdranch.android.criminalintent.Model.Crime;
 
 import java.util.ArrayList;
 import java.util.List;

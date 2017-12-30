@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bignerdranch.android.criminalintent.Model.Crime;
+
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {

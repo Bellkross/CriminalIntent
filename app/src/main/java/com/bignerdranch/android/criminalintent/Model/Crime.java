@@ -1,9 +1,10 @@
-package com.bignerdranch.android.criminalintent;
+package com.bignerdranch.android.criminalintent.Model;
 
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.UUID;
 
-public class Crime {
+public class Crime extends Model {
 
     private UUID mId;
     private String mTitle;
