@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Vitalii Koren on 30.12.2017.
  */
 
-public class DBHelper<E extends Model> {
+public abstract class DBHelper<E extends Model> {
     public static final CrimeDBHelper CRIME_DB_HELPER = new CrimeDBHelper();
 
     public void insert(E entity) {
@@ -22,7 +22,7 @@ public class DBHelper<E extends Model> {
     public void delate(E entity) {
     }
 
-    public List<E> getAll() {
+    public List <E> getAll() {
         return new ArrayList<E>();
     }
 
