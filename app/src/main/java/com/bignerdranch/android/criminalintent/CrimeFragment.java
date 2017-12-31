@@ -19,6 +19,7 @@ import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +40,14 @@ import static android.widget.CompoundButton.OnClickListener;
 
 public class CrimeFragment extends Fragment {
 
+    private static final String LOG_TAG = "CrimeFragment";
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_PHOTO = "DialogPhoto";
 
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
-    private static final int REQUEST_PHOTO= 2;
+    private static final int REQUEST_PHOTO = 2;
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -191,6 +194,16 @@ public class CrimeFragment extends Fragment {
         });
 
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+
+        mPhotoView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                PhotoFragment dialog = PhotoFragment.newInstance(Uri.fromFile(mPhotoFile));
+                dialog.setTargetFragment(CrimeFragment.this, 3);
+                dialog.show(manager, DIALOG_PHOTO);
+            }
+        });
         updatePhotoView();
 
 
@@ -254,8 +267,7 @@ public class CrimeFragment extends Fragment {
             solvedString = getString(R.string.crime_report_unsolved);
         }
         String dateFormat = "EEE, MMM dd";
-        String dateString = DateFormat.format(dateFormat,
-                mCrime.getDate()).toString();
+        String dateString = DateFormat.format(dateFormat, mCrime.getDate()).toString();
         String suspect = mCrime.getSuspect();
         if (suspect == null) {
             suspect = getString(R.string.crime_report_no_suspect);
