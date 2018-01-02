@@ -24,4 +24,5 @@
     <string name="crime_report_subject">CriminalIntent Crime Report</string>
     <string name="send_report">Send crime report via</string>
     <string name="detailed_photo_of_crime_description">Detailed photo of crime</string>
+    <string name="delete_crime">Delete</string>
 </resources>
