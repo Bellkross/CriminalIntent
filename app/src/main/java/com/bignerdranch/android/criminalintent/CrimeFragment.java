@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
-import android.telecom.Call;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -64,7 +63,7 @@ public class CrimeFragment extends Fragment {
     private int mPhotoHeight;
     private Callbacks mCallbacks;
 
-    public interface Callbacks{
+    public interface Callbacks {
         void onCrimeUpdated(Crime crime);
     }
 
