@@ -62,7 +62,7 @@
         android:id="@+id/crime_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="delete" />
+        android:text="@string/delete_crime" />
 
     <CheckBox
         android:id="@+id/crime_solved"

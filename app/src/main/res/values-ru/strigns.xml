@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Преступления</string>
+    <string name="crime_title_hint">Введите заголовок для преступления.</string>
+    <string name="crime_title_label">Заголовок</string>
+    <string name="crime_details_label">Датали</string>
+    <string name="crime_solved_label">Раскрыто</string>
+    <string name="date_picker_title">Дата приступления:</string>
+    <string name="new_crime">Новое преступление</string>
+    <string name="show_subtitle">Показать подзаголовок</string>
+    <string name="hide_subtitle">Скрыть подзаголовок</string>
+    <plurals name="subtitle_plural">
+        <item quantity="one">%1$d преступление</item>
+        <item quantity="other">%1$d преступлений</item>
+    </plurals>
+    <string name="crime_suspect_text">Выбрать подозреваемого</string>
+    <string name="crime_report_text">Отправить доклад</string>
+    <string name="crime_report">%1$s!
+    Преступление отправлено на %2$s. %3$s, и %4$s
+    </string>
+    <string name="crime_report_solved">Раскрыто</string>
+    <string name="crime_report_unsolved">Не раскрыто</string>
+    <string name="crime_report_no_suspect">без подозреваемого.</string>
+    <string name="crime_report_suspect">подозреваемый %s.</string>
+    <string name="crime_report_subject">Преступления, доклад</string>
+    <string name="send_report">Отправить доклад через</string>
+    <string name="detailed_photo_of_crime_description">Детали фото преступления</string>
+    <string name="delete_crime">Удалить</string>
+</resources>
