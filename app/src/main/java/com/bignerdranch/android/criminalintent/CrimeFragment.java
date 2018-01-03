@@ -189,6 +189,8 @@ public class CrimeFragment extends Fragment {
         }
         if (mCrime.getSuspect() != null) {
             mSuspectButton.setText(mCrime.getSuspect());
+            mSuspectButton.setContentDescription(String.format("%1$s, now suspect is %2$s",
+                    getString(R.string.crime_suspect_description),mCrime.getSuspect()));
         }
         mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -287,6 +289,10 @@ public class CrimeFragment extends Fragment {
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             updateCrime();
             updatePhotoView();
+            mPhotoView.announceForAccessibility(
+                    getResources().getString(mPhotoFile == null || !mPhotoFile.exists()
+                            ? R.string.crime_photo_no_image_description :
+                            R.string.crime_photo_image_description));
         }
     }
 
@@ -296,7 +302,10 @@ public class CrimeFragment extends Fragment {
     }
 
     private void updateDate() {
-        mDateButton.setText(mCrime.getDate().toString());
+        String dateString = DateFormat.getDateFormat(getContext()).format(mCrime.getDate()).toString();
+        mDateButton.setText(dateString);
+        mDateButton.setContentDescription(String.format("%1$s, date of crime: %2$s",
+                getString(R.string.crime_date_description),dateString));
     }
 
     private String getCrimeReport() {
@@ -321,10 +330,14 @@ public class CrimeFragment extends Fragment {
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setImageDrawable(null);
+            mPhotoView.setContentDescription(
+                    getString(R.string.crime_photo_no_image_description));
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(
                     mPhotoFile.getPath(), mPhotoWidth, mPhotoHeight);
             mPhotoView.setImageBitmap(bitmap);
+            mPhotoView.setContentDescription(
+                    getString(R.string.crime_photo_image_description));
         }
     }
 }
