@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bignerdranch.android.criminalintent">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.bignerdranch.android.criminalintent">
 
     <application
         android:allowBackup="true"
@@ -19,6 +20,12 @@
         <activity android:name=".CrimePagerActivity"
             android:parentActivityName=".CrimeListActivity">
         </activity>
+
+        <provider
+            android:name=".ContentProvider.SQLiteContentProvider"
+            android:authorities="com.bignerdranch.android.criminalintent"
+            android:exported="false"
+            tools:ignore="InnerclassSeparator"/>
     </application>
 
 </manifest>
