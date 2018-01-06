@@ -4,8 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
-import com.bignerdranch.android.criminalintent.CrimeDbSchema.CrimeTable;
+import com.bignerdranch.android.criminalintent.CrimeContract.CrimeTable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ public class CrimeLab {
     private static CrimeLab sCrimeLab;
 
     private Context mContext;
-    private SQLiteDatabase mDatabase;
 
     public static CrimeLab get(Context context) {
         if (sCrimeLab == null) {
@@ -26,23 +26,41 @@ public class CrimeLab {
     }
 
     private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
-        String sql;
-        if (whereArgs   == null)
-            sql = String.format("SELECT * FROM %1$s;", CrimeTable.NAME);
-        else
-            sql = String.format("SELECT * FROM %1$s WHERE %2$s = ?", CrimeTable.NAME, CrimeTable.Cols.UUID);
-        Cursor cursor = mDatabase.rawQuery(sql, whereArgs);
+        String[] projection = {
+                CrimeTable.Cols.UUID,
+                CrimeTable.Cols.TITLE,
+                CrimeTable.Cols.DATE,
+                CrimeTable.Cols.SOLVED,
+                CrimeTable.Cols.SUSPECT
+        };
+
+        Cursor cursor;
+        if (whereArgs   == null) {
+            cursor = mContext.getContentResolver().
+                    query(CrimeTable.CONTENT_URI, projection,
+                            null, null, null);
+        } else {
+            cursor = mContext.getContentResolver().
+                    query(CrimeTable.CONTENT_URI, projection,
+                            whereClause, whereArgs, null);
+        }
+
         return new CrimeCursorWrapper(cursor);
     }
 
     public void addCrime(final Crime c) {
         ContentValues values = getContentValues(c);
+        mContext.getContentResolver().insert(CrimeTable.CONTENT_URI, values);
+/*
         mDatabase.insert(CrimeTable.NAME, null, values);
+*/
     }
 
     public void deleteCrime(final Crime c) {
         ContentValues values = getContentValues(c);
-        mDatabase.delete(CrimeTable.NAME, CrimeTable.Cols.UUID + " =  ?",
+        Uri uri = Uri.withAppendedPath(CrimeTable.CONTENT_URI,c.getId().toString());
+        mContext.getContentResolver().delete(uri,
+                CrimeTable.Cols.UUID + " =  ?",
                 new String[]{values.getAsString(CrimeTable.Cols.UUID)});
     }
 
@@ -54,9 +72,10 @@ public class CrimeLab {
     public void updateCrime(Crime crime) {
         String uuidString = crime.getId().toString();
         ContentValues values = getContentValues(crime);
-        mDatabase.update(CrimeTable.NAME, values,
-                CrimeTable.Cols.UUID + " = ?",
-                new String[]{uuidString});
+        Uri uri = Uri.withAppendedPath(CrimeTable.CONTENT_URI,uuidString);
+        mContext.getContentResolver().update(uri,values,
+                CrimeTable.Cols.UUID + " =  ?",
+                new String[]{values.getAsString(CrimeTable.Cols.UUID)});
     }
 
     private static ContentValues getContentValues(Crime crime) {
@@ -71,7 +90,6 @@ public class CrimeLab {
 
     private CrimeLab(Context context) {
         mContext = context.getApplicationContext();
-        mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
     }
 
     public List<Crime> getCrimes() {
