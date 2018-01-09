@@ -14,11 +14,13 @@ public class CrimeBaseHelper extends SQLiteOpenHelper {
     private static final String AUTHORITY = "com.bignerdranch.android.criminalintent";
     private static final Uri BASE_URI = Uri.parse("content://com.bignerdranch.android.criminalintent");
 
+    public static String getAUTHORITY() {
+        return AUTHORITY;
+    }
 
     public CrimeBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {

@@ -2,10 +2,16 @@ package com.bignerdranch.android.criminalintent.CP;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.bignerdranch.android.criminalintent.CrimeDbSchema;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Koren Vitalii on 05.01.2018.
@@ -14,6 +20,12 @@ import android.support.annotation.Nullable;
 public class CrimeDbContentProvider extends ContentProvider {
     private static Uri sBaseUri;
     private CrimeBaseHelper mCrimeBaseHelper;
+    private final UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    private final List<String> mTables;
+
+    public CrimeDbContentProvider() {
+        mTables = new ArrayList<>();
+    }
 
     public CrimeBaseHelper getCrimeBaseHelper() {
         return mCrimeBaseHelper;
@@ -23,6 +35,8 @@ public class CrimeDbContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mCrimeBaseHelper = new CrimeBaseHelper(getContext());
+
+        mUriMatcher.addURI(mCrimeBaseHelper.getAUTHORITY(), CrimeDbSchema.CrimeTable.NAME, 1);
         return true;
     }
 
@@ -35,7 +49,11 @@ public class CrimeDbContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        int index = mUriMatcher.match(uri);
+        if (index < 0 || index >= mTables.size()) {
+            return "";
+        }
+        return mTables.get(index);
     }
 
     @Nullable
