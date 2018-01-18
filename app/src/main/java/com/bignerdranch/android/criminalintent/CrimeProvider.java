@@ -24,9 +24,9 @@ public class CrimeProvider extends ContentProvider {
     private CrimeBaseHelper mCrimeBaseHelper;
 
     static {
-
         sUriMatcher.addURI(CrimeContract.CONTENT_AUTHORITY, CrimeContract.PATH_CRIMES, CRIMES);
-        sUriMatcher.addURI(CrimeContract.CONTENT_AUTHORITY, CrimeContract.PATH_CRIMES + "/*", CRIME_ID);
+        sUriMatcher.addURI(CrimeContract.CONTENT_AUTHORITY, CrimeContract.PATH_CRIMES + "/*",
+                CRIME_ID);
     }
 
     @Override
@@ -37,8 +37,10 @@ public class CrimeProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
+                        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteDatabase database = mCrimeBaseHelper.getReadableDatabase();
+
         Cursor cursor;
         final int match = sUriMatcher.match(uri);
 

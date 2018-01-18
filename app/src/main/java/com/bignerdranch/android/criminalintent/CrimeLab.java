@@ -3,7 +3,6 @@ package com.bignerdranch.android.criminalintent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.bignerdranch.android.criminalintent.CrimeContract.CrimeTable;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class CrimeLab {
+
     private static CrimeLab sCrimeLab;
 
     private Context mContext;
@@ -23,6 +23,10 @@ public class CrimeLab {
             sCrimeLab = new CrimeLab(context);
         }
         return sCrimeLab;
+    }
+
+    private CrimeLab(Context context) {
+        mContext = context.getApplicationContext();
     }
 
     private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
@@ -35,7 +39,7 @@ public class CrimeLab {
         };
 
         Cursor cursor;
-        if (whereArgs   == null) {
+        if (whereArgs == null) {
             cursor = mContext.getContentResolver().
                     query(CrimeTable.CONTENT_URI, projection,
                             null, null, null);
@@ -51,14 +55,11 @@ public class CrimeLab {
     public void addCrime(final Crime c) {
         ContentValues values = getContentValues(c);
         mContext.getContentResolver().insert(CrimeTable.CONTENT_URI, values);
-/*
-        mDatabase.insert(CrimeTable.NAME, null, values);
-*/
     }
 
     public void deleteCrime(final Crime c) {
         ContentValues values = getContentValues(c);
-        Uri uri = Uri.withAppendedPath(CrimeTable.CONTENT_URI,c.getId().toString());
+        Uri uri = Uri.withAppendedPath(CrimeTable.CONTENT_URI, c.getId().toString());
         mContext.getContentResolver().delete(uri,
                 CrimeTable.Cols.UUID + " =  ?",
                 new String[]{values.getAsString(CrimeTable.Cols.UUID)});
@@ -72,8 +73,8 @@ public class CrimeLab {
     public void updateCrime(Crime crime) {
         String uuidString = crime.getId().toString();
         ContentValues values = getContentValues(crime);
-        Uri uri = Uri.withAppendedPath(CrimeTable.CONTENT_URI,uuidString);
-        mContext.getContentResolver().update(uri,values,
+        Uri uri = Uri.withAppendedPath(CrimeTable.CONTENT_URI, uuidString);
+        mContext.getContentResolver().update(uri, values,
                 CrimeTable.Cols.UUID + " =  ?",
                 new String[]{values.getAsString(CrimeTable.Cols.UUID)});
     }
@@ -86,10 +87,6 @@ public class CrimeLab {
         values.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
         values.put(CrimeTable.Cols.SUSPECT, crime.getSuspect());
         return values;
-    }
-
-    private CrimeLab(Context context) {
-        mContext = context.getApplicationContext();
     }
 
     public List<Crime> getCrimes() {
